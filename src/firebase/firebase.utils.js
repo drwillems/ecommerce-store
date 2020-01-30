@@ -23,6 +23,7 @@ const config = {apiKey: "AIzaSyDlD4mzwMw_Ye-IgdQndYg2SjtMLIbSL3g",
     const snapShot = await userRef.get();
 
     //if exists is false from thhe object that you receive back from firebase
+    
     if(!snapShot.exists) {
         const {displayName, email} = userAuth;
         const createdAt = new Date();
