@@ -3,7 +3,7 @@ import './sign-in.styles.scss';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 
-import  { singInWithGoogle } from '../../firebase/firebase.utils';
+import  {auth, singInWithGoogle } from '../../firebase/firebase.utils';
 
 
 
@@ -19,8 +19,19 @@ class SignIn extends React.Component {
 // Event data is capture by the browser, and you can decide to pass the event object into the function. In this example, you passed it as event, it's often common to see it passed as just simply e, in which case it becomes e.preventDefault().
 //The event data is there, whether you capture it or not. It's just something handled by the javascript executed in the browser.
 //in short event data is always there but you decide to pass it into a function as done below
-handleSubmit = event => {
+handleSubmit = async event => {
 event.preventDefault();
+
+const {email, password} = this.state;
+
+try {
+    await auth.signInWithEmailAndPassword(email, password);
+    this.setState({email: '', password: ''});
+
+} catch(error) {
+    console.log (error);
+}
+
 this.setState({email: '', password: ''});
 };
 

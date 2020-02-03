@@ -6,25 +6,16 @@ import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SingInAndSignUpPage from './pages/sing-in-and-sing-up/sing-in-and-sing-up.component';
 import {auth, createUserProfileDocument} from './firebase/firebase.utils';
+import {connect} from 'react-redux';
+import {setCurrentUser} from './redux/user/user.action'
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-
-
-    //setting the current user to null as default before loadin state
-    this.state = {
-      currentUser : null
-    }
-  }
-
-
-  unsubscribeFromAuth = null
+    unsubscribeFromAuth = null
 
   // after this you will receive an object back from firebase contain a lot more details about the user.
   //reason why this is in the app is because it can always be used. state trickles down to lower components
   componentDidMount() {
-
+    const {setCurrentUser} = this.props;
     //Get the currently signed-in user The recommended way to get the current user is by setting an observer on the Auth object:
     // firebase.auth().onAuthStateChanged(function(user) {
     // if (user) {
@@ -41,17 +32,15 @@ class App extends React.Component {
     //You can listen to a document with the onSnapshot() method. An initial call using the callback you provide creates a document snapshot immediately with the
      // current contents of the single document. Then, each time the contents change, another call updates the document snapshot.
         userRef.onSnapshot(snapShot => {
-          this.setState({
-            currentUser: {
+          setCurrentUser ({
               id: snapShot.id,
               ...snapShot.data()
-            }
+            });
           });
-        });
-        
+         
 
       }
-      this.setState({currentUser:userAuth});
+      setCurrentUser({currentUser:userAuth});
     });
   }
   //This method is called when a component is being removed from the DOM.
@@ -63,7 +52,7 @@ class App extends React.Component {
  render()  {
    return (
     <div>
-    <Header currentUser={this.state.currentUser}/>
+    <Header/>
     <Switch>
     <Route exact path='/' component={HomePage}></Route>
     <Route path='/shop' component={ShopPage}></Route>
@@ -76,5 +65,9 @@ class App extends React.Component {
   );
   }
 }
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
 
-export default App;
+})
+
+export default  connect(null,mapDispatchToProps)(App);
