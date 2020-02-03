@@ -1,4 +1,4 @@
-import firebase from 'firebase/app';
+import  firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 
@@ -12,6 +12,9 @@ const config = {apiKey: "AIzaSyDlD4mzwMw_Ye-IgdQndYg2SjtMLIbSL3g",
     measurementId: "G-K6T2GPR631"
   };
 
+    
+  
+  firebase.initializeApp(config);
 
   export const createUserProfileDocument = async (userAuth, additionalData) => {
     //only want to perform save to database when we get a user auth object.
@@ -35,16 +38,16 @@ const config = {apiKey: "AIzaSyDlD4mzwMw_Ye-IgdQndYg2SjtMLIbSL3g",
                 email,
                 createdAt,
                 ...additionalData
-            })
+            });
         } catch(error) {
             console.log('error catch', error.message);
         }
 
     }
     return userRef;
-  }
+  };
 
-  firebase.initializeApp(config);
+  //firebase.initializeApp(config);
 
   export const auth = firebase.auth();
 
@@ -54,5 +57,5 @@ const config = {apiKey: "AIzaSyDlD4mzwMw_Ye-IgdQndYg2SjtMLIbSL3g",
   provider.setCustomParameters({prompt: 'select_account'});
   export const singInWithGoogle = () => auth.signInWithPopup(provider);
 
-  export default firebase;
+ export default firebase;
 

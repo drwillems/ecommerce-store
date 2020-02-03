@@ -31,8 +31,6 @@ try {
 } catch(error) {
     console.log (error);
 }
-
-this.setState({email: '', password: ''});
 };
 
 handleChange = event => {
